@@ -22,7 +22,7 @@
 - name: install kafka-manager
   sudo: yes
   run_once: yes
-  command: consul-cli kv-write mantl-install/apps/kafka-manager @/etc/marathon/apps/kafka-manager.json
+  command: consul-cli kv-write --token={{ consul_acl_mantl_api_token }} mantl-install/apps/kafka-manager @/etc/marathon/apps/kafka-manager.json
   when: kafka_manager_service_count.stdout|int == 0
   tags:
     - kafka
