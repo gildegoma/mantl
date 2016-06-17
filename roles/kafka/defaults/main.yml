@@ -67,3 +67,13 @@ kafka_topics:
     partitions: 3
     replicas: 1
     options: retention.ms=3600000,flush.ms=1000
+
+
+# kafka-manager
+kafka_manager_install: no
+kafka_manager_id: mantl/kafka-manager
+kafka_manager_service_name: kafka-manager-mantl
+kafka_manager_instances: 1
+kafka_manager_cpu: 0.5
+kafka_manager_mem: 1024
+kafka_manager_load_balancer: off

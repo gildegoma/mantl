@@ -52,3 +52,6 @@
     - /etc/marathon/apps/kafka.json
   tags:
     - kafka
+
+- include: kafka-manager.yml
+  when: kafka_manager_install|bool

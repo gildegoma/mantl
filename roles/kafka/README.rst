@@ -29,10 +29,23 @@ nodes that each have at least 4 CPUs and 4 GBs of memory available to Mesos.
 Depending on your planned environment, you may wish to customize the sizing of
 your Kafka cluster using the variables documented below.
 
+Installing Kafka Manager
+------------------------
+
+Optionally, you can choose to install the `Kafka Manager
+<https://github.com/yahoo/kafka-manager>`_ tool to help you manage your Kafka
+deployment. To do so, you can install the addon with the
+``kafka_manager_install`` variable set to ``yes``. For example:
+
+.. code-block:: shell
+
+   ansible-playbook -e @security.yml -e 'kafka_manager_install=yes' addons/kafka.yml
+
 Customizing your Installation
 -----------------------------
 
-The size of your Kafka cluster is controlled by the variables documented below.
+The size and configuration of your Kafka cluster is controlled by the variables
+documented below.
 
 Variables
 ---------
@@ -128,9 +141,6 @@ Variables
     - auto.create.topics.enable=false
     - socket.send.buffer.bytes=1048576
     - topic.flush.intervals.ms=5000
-    - topic.log.retention.hours=logs:24\\,events:24\\,metrics:24\\,alarm-state-transitions:1
-    - topic.partition.count.map=logs:16\\,events:16\\,metrics:24\\,alarm-state-transitions:3
-    - topic.flush.intervals.ms=logs:3000\\,events:500\\,metrics:3000\\,alarm-state-transitions:1000
 
 .. data:: kafka_broker_jvm_options
 
@@ -143,3 +153,52 @@ Variables
     - "-Dcom.sun.management.jmxremote.local.only=false"
     - "-Dcom.sun.management.jmxremote.authenticate=false"
     - "-Dcom.sun.management.jmxremote.ssl=false"
+
+.. data:: kafka_manager_install
+
+   Indicates whether or not to install the Kafka Manager tool.
+
+   default: no
+
+.. data:: kafka_manager_id
+
+   The id of the Kafka Manager application in Marathon.
+
+   default: mantl/kafka-manager
+
+.. data:: kafka_manager_service_name
+
+   The name of the service that is registered in Consul when Kafka Manager is
+   deployed. This needs to match what would be derived via mesos-consul. For
+   example, when ``kafka_manager_id`` is set to ``mantl/kafka-manager``, the
+   service name should be ``kafka-manager-mantl``.
+
+   default: kafka-manager-mantl
+
+.. data:: kafka_manager_instances
+
+   Number of Kafka Manager instances.
+
+   default: 1
+
+.. data:: kafka_manager_cpu
+
+   The amount of CPU resources to allocate to each Kafka Manager instance.
+
+   default: 0.5
+
+.. data:: kafka_manager_mem
+
+   The amount of memory to allocate to each Kafka Manager instance.
+
+   default: 1024
+
+.. data:: kafka_manager_load_balancer
+
+   Indicates whether or not to expose the Kafka Manager on an edge node. Set to
+   ``external`` if you wish to expose Kafka Manager via Traefik. Be aware that
+   this will mean the application is available externally without
+   authentication.
+
+   default: off
+
